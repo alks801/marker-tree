@@ -1,8 +1,17 @@
 # Marker Tree
 
+[![npm version](https://badge.fury.io/js/marker-tree.svg)](https://www.npmjs.com/package/marker-tree)
+[![CI](https://github.com/alks801/marker-tree/actions/workflows/ci.yml/badge.svg)](https://github.com/alks801/marker-tree/actions/workflows/ci.yml)
+
 To simplify the labeling of elements for testing, the `MarkerTree` library was created.
 
 It allows adding relative data attributes to any DOM elements. The attribute values are automatically assigned based on a mapper object. This means we create a specific object in TypeScript, describe its properties using simple instructions, and use it for labeling elements and testing. One object is used for both labeling and as a quick way to access element selectors.
+
+## Installation
+
+```bash
+npm install marker-tree
+```
 
 ## Basic Types
 
@@ -237,3 +246,49 @@ cy.get(menu.button.selector).click();
 ```
 
 This approach ensures a clean and maintainable way to manage selectors and test interactions in your application.
+
+---
+
+## Custom Attribute Names
+
+By default, `marker-tree` uses `data-test` as the attribute name. If you need a different attribute (e.g., `data-testid` for Testing Library or `data-cy` for Cypress), use the `createMarkerTree` factory:
+
+```typescript
+import { createMarkerTree } from 'marker-tree';
+
+// For Testing Library
+const { simple, complex, byKey } = createMarkerTree('data-testid');
+
+// For Cypress
+const { simple, complex, byKey } = createMarkerTree('data-cy');
+
+// For any custom attribute
+const { simple, complex, byKey } = createMarkerTree('data-qa');
+```
+
+The returned `simple`, `complex`, and `byKey` functions work exactly the same way, but generate selectors and `nodeProps` with your custom attribute name:
+
+```typescript
+const { simple, complex } = createMarkerTree('data-testid');
+
+const rootSchema = complex({
+  button: simple,
+});
+
+const root = rootSchema('app');
+
+console.log(root.button.selector);   // "[data-testid='app/button']"
+console.log(root.button.nodeProps);  // { 'data-testid': 'app/button' }
+```
+
+---
+
+## TypeScript Support
+
+This library is written in TypeScript and provides full type inference for your marker trees. All nested properties are properly typed, giving you autocomplete and type checking in your IDE.
+
+---
+
+## License
+
+ISC

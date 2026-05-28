@@ -54,6 +54,9 @@
     "url": "https://github.com/alks801/marker-tree/issues"
   },
   "homepage": "https://github.com/alks801/marker-tree#readme",
+  "engines": {
+    "node": ">=20"
+  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^8.60.0",
